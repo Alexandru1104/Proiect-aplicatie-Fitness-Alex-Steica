@@ -1,0 +1,73 @@
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+
+
+
+
+De tinut minte : 
+
+Pt Selected exercise (bd) o sa avem urmatoarele : 
+    email
+        lista (Array) de obiecte de tip workout_day (clasa din Exercises)
+
+
+
+Requirements : 
+
+Baza de date cu numele persoanleor (login) - ok
+
+Baze de date cu parolele utilizatorilor
+    Aici se va pune fieldul acela de siguranta x2 parola la creare ID
+
+Baza de date cu exercitii prestabilitate 
+    Adauga exercitii
+    Sterge exercitii
+
+Ar trebuie sa pun si greutatea (kg)
+    Aici adauga fiecare utilizator cu ce greutate a lucrat
+
+La sfarsit o sa avem o extragere de date intr-un pdf cu statistici ca :
+    timpul de lucru (/ zi cat am fost la sala)
+    tipurile de execitii facute (extrapolare pe fiecare sapt / luna)
+    greutatea folosita / fiecare exercitie timp de mai multe sapt sa vedem si evolutia
+    Eventual se poate stabili sa se trimita un e-mail saptamanal cu statisticile
+    etc
+
+Ce se intampla de fapt? : 
+    1. Sign up function 
+    2. login function
+    3. Creare cont (set up) (varsta, greutate, zile de sala pe saptaman, etc)
+    4. Realizarea planului de exercitii / saptamana
+        class set_up_account () :    
+            As vrea sa adaug aici toate exercitiile ce vrea sa le faca utilizatorul
+            Cate zile de sala pe sapt? :
+                If 3 zile (Push, pull, legs) -> Si sa il intrebe daca doreste sa le faca asa sau vrea sa isi standardizeze el un program
+                If 4 zile (Push, pull, legs and arms) -> -> Si sa il intrebe daca doreste sa le faca asa sau vrea sa isi standardizeze el un program
+                If 5 zile (Push, pull, legs, arms and cardio - Bicicleta) -> -> Si sa il intrebe daca doreste sa le faca asa sau vrea sa isi standardizeze el un program
+    5. Adaugare exercitii din baza de date
+    6. Adaugare exercitii care nu sunt in baza de date
+
+
+set up
+    If 3 zile (Push, pull, legs) -> Si sa il intrebe daca doreste sa le faca asa sau vrea sa isi standardizeze el un program
+    If 4 zile (Push, pull, legs and arms) -> -> Si sa il intrebe daca doreste sa le faca asa sau vrea sa isi standardizeze el un program
+    If 5 zile (Push, pull, legs, arms and cardio - Bicicleta) -> -> Si sa il intrebe daca doreste sa le faca asa sau vrea sa isi standardizeze el un program
+Adaugare exercitii
+    Push
+        1 Ex 1
+            Cate seturi (3)
+                Repetare 1 :
+                    greutate
+                Rep 2 : 
+                    greutate
+        2
+        3
+
+
+        7 - retur
+    pull
+        1
+        2
+        3
+    legs
+
