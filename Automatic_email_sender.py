@@ -2,7 +2,7 @@
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from smtplib import SMTP
-import Baza_de_date.Sign_up_and_login as login_utils
+import Data_base.Sign_up_and_login as login_utils
 import User_info
 
 
@@ -33,8 +33,8 @@ if __name__ == "__main__":
     send_mail(
         sender_gmail="fitnessapp@gmail.com",
         sender_password=password,
-        # to_address= "alexsteica92@yahoo.com",
-        to_address= User_info.get_current_usr().get_email_variable(),
+        to_address= "alexsteica92@yahoo.com",
+        # to_address= User_info.get_current_usr().get_email_variable(),
         body="You have been successfully logged in on the Fitness App !",
         subject="Autentification completed !! "
     )

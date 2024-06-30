@@ -69,13 +69,10 @@ def login (db, email, password) :
     
 def add_set_up_var_to_db(db) :
 
-    print("Add se_up - 1")
     username_table = db.get_collection("Users")
     filter_query = {"User.email": User_info.get_current_usr().get_email_variable()}
     new_values = {"$set":{"User.isSetUp" : True}}
     username_table.update_one(filter_query, new_values)
-    print("Add se_up - 2")
-
 
 
 def set_up_account (db) :  

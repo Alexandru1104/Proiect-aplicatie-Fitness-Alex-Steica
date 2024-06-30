@@ -1,9 +1,9 @@
 
 import tkinter as tk
 from tkinter import ttk
-import Baza_de_date.Exercises as exercises
+import Data_base.Exercises as exercises
 import User_info
-import Data_base_info
+import Data_base.Data_base_info as Data_base_info
 
 
 list_days = []
