@@ -2,7 +2,12 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
-
+########################################################################
+# Description: Function to connect to dataBase
+# Parameters: no params
+# Returns:
+#   - db : object containing database
+########################################################################
 def get_db ():
 
     user_pass = "Mamatata92!"

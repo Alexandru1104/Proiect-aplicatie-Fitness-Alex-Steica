@@ -3,8 +3,22 @@ from re import L
 import Custom_exercises_UI as Exercises_UI
 import User_info
 
-
-# -------------------------------- Signed up function started ----------------------------#
+########################################################################
+# Description: Function used to create new user
+# Queries DB: 
+#   - find_one -> to check if user already exists in db (Users collection)
+#   - insert_one -> to insert the new user in db (Users collection)
+# Parameters:
+#    - db : database -> object for database
+#    - user_input_first_name: string
+#    - user_input_last_name: string 
+#    - user_input_age: integer 
+#    - user_input_email: string 
+#    - user_input_username: string 
+#    - user_input_password: string
+#    - user_input_password_check: string -> used to double check the psswd
+# Returns: no return
+########################################################################
 def sign_up (db, user_input_first_name, user_input_last_name, user_input_age, user_input_email, user_input_username, user_input_password, user_input_password_check) :
 
     username_table = db.get_collection("Users")
@@ -37,8 +51,18 @@ def sign_up (db, user_input_first_name, user_input_last_name, user_input_age, us
 
     print ("User sign up succesfully !! ")
 
-# -------------------------------- Signed up function finished ---------------------------- #
-
+########################################################################
+# Description: Function used to login existing user
+# Queries DB: 
+#   - find_one -> to check if user exists in db and passwd matches
+# Parameters:
+#    - db : database -> object for database
+#    - email: string -> email provided by user
+#    - password: string -> password provided by user
+# Actions:
+#    - set up usr object defined in User_info.py with info from db
+# Returns: no return
+#######################################################################
 def login (db, email, password) :
     
     username_table = db.get_collection("Users")
@@ -65,8 +89,16 @@ def login (db, email, password) :
         gym_days = selected_exercise["gym_days"]
         User_info.get_current_usr().set_gym_days_variable(gym_days)
 
-# -------------------------------- Login function finished ---------------------------- #
-    
+
+########################################################################
+# Description: Function that sets the isSetUp field on True for the current usr
+#            : The function is called at the end of set_up_account()
+# Queries DB: 
+#   - update_one -> update the isSetUp field of the usr from False to True
+# Parameters:
+#    - db : database -> object for database
+# Returns: no return
+#######################################################################
 def add_set_up_var_to_db(db) :
 
     username_table = db.get_collection("Users")
@@ -74,7 +106,15 @@ def add_set_up_var_to_db(db) :
     new_values = {"$set":{"User.isSetUp" : True}}
     username_table.update_one(filter_query, new_values)
 
-
+########################################################################
+# Description: Function used on first login to setup user account
+#            : User can select the number of gym days and the workout
+#            : Gym days can be 3/4/5 and usr can use default or custom workout
+# Queries DB: no query
+# Parameters:
+#    - db : database -> object for database
+# Returns: no return
+#######################################################################
 def set_up_account (db) :  
     
     gym_days =int(input("How many days per week do you want to go to the gym (3/4/5) : "))
@@ -92,11 +132,29 @@ def set_up_account (db) :
 
     add_set_up_var_to_db(db)
 
-        
+########################################################################
+# Description: Function used if usr selects a custom plan creation
+#            : It calls the set_custom_plan() function from Exercises UI module
+# Queries DB: no query
+# Parameters: no param
+# Returns: no return
+#######################################################################
 def display_custom_plan ():
 
     Exercises_UI.set_custom_plan()
 
+########################################################################
+# Description: Function used if usr selects the default plan usage
+#            : Display selected plan based on usr selection of gym days
+# Queries DB: 
+#    - find: find all entry in Default exercises collection that match the gym days number
+#    - insert_one: insert entry in Selected exercises collection containing the
+#                : current usr, number of gym days + exercises plan
+# Parameters:
+#    - db : database -> object for database
+#    - number_of_days: integer -> number of gym days selected by usr
+# Returns: no return
+#######################################################################
 def display_default_plan (db, number_of_days):
 
     default_exercises = db.get_collection("Default exercises")
@@ -155,7 +213,15 @@ def display_default_plan (db, number_of_days):
     selected_exercises_dict ["gym_days"] = User_info.get_current_usr().get_gym_days_variable()
     custom_exercises.insert_one (selected_exercises_dict)
 
-
+########################################################################
+# Description: Function used if usr wants to remove his account
+# Queries DB: 
+#    - delete_one: remove user from Users, Selected/Logged exercises tables
+# Parameters:
+#    - db : database -> object for database
+#    - number_of_days: integer -> number of gym days selected by usr
+# Returns: no return
+#######################################################################
 def delete_account (db) :
     
     are_you_sure = input ("Are you sure you want to delete your account? (y/n)")
@@ -170,24 +236,28 @@ def delete_account (db) :
         users_table.delete_one(filter_query)
 
         exercises_table = db.get_collection("Selected exercises")
-        filter_query = {"User.email": User_info.get_current_usr().get_email_variable()}
-        exercises_table.delete_many(filter_query)
+        filter_query = {"email": User_info.get_current_usr().get_email_variable()}
+        exercises_table.delete_one(filter_query)
+
+        # TODO: check if this is still working
+        logged_exercises_table = db.get_collection("Logged exercises")
+        filter_query = {"email": User_info.get_current_usr().get_email_variable()}
+        logged_exercises_table.delete_one(filter_query)
 
         User_info.get_current_usr().reset_user()
     
     else : 
         print("Congratulations you are still a member !! ")
 
-    
 
-# def show_progress ():
-
-#     return
-
-# def reset_account () :
-
-#     return
-
+########################################################################
+# Description: Function used if usr wants to remove his account log out
+#            : Resets all current user (object) information
+# Queries DB: no queries
+# Parameters:
+#    - db : database -> object for database
+# Returns: no return
+####################################################################
 def logout (db): 
 
     User_info.get_current_usr().reset_user()

@@ -4,11 +4,9 @@ import Data_base.Sign_up_and_login as login_utils
 import User_info
 import Custom_exercises_UI
 import os
-
-############# TO DELETE !!!! 
-
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+
 def get_db ():
 
     user_pass = "Mamatata92!"
@@ -19,31 +17,42 @@ def get_db ():
     db = User.get_database("data_base_fitness_app")
     return db
 
-#### PANA AICI !!! 
 
+# menu we display for unlogged users (when we start the app)
 start_menu = {
     "Sign up " : [login_utils.sign_up, ["First name", "Last name", "Age", "email", "Username", "Password", "Password again"]],
     "Login " : [login_utils.login,["email", "password"]]
                 }
 
+# menu we display for logged users (after they perform login)
 logged_in_menu = {
 
     "Log workout" : [Custom_exercises_UI.log_workout, []],
-    "Show progress" : [],
-    "Reset account" : [],
     "Logout" : [login_utils.logout, []],
     "Delete account" : [login_utils.delete_account, []]
 
 }
 
+########################################################################
+# Description: Function to display the options in the menu
+# Parameters:
+#    - options_menu : dict -> dictionary of pairs cmmd_no : menu_option 
+# Returns: no return
+########################################################################
 def display_menu(options_menu):
-
     counter = 1
     print("Press a key below to select an option : ")
     for option_menu in options_menu:
         print(f"{counter}. {option_menu}")
         counter += 1
 
+########################################################################
+# Description: Function to take cmmd_no from user input
+# Parameters:
+#    - options_menu : dict -> dictionary of pairs cmmd_no : menu_option 
+# Returns:
+#    - selected_option : int -> number of selected command
+########################################################################
 def input_menu_cmd(options_menu: dict):
     while True:
         selected_option = int(input("Insert your desired key here : "))
@@ -53,6 +62,15 @@ def input_menu_cmd(options_menu: dict):
             continue
         return selected_option
 
+
+
+########################################################################
+# Description: Main function called when we start the app;
+#            : Displays the menu depending on the state of the user
+# Parameters:
+#    - db : database -> mongo db object used to access database
+# Returns: no return
+########################################################################
 def show_menu (db):
 
     while True:
@@ -61,7 +79,7 @@ def show_menu (db):
         if not is_logged_in:
             menu = start_menu
         else :
-            print (User_info.get_current_usr().get_is_set_up_variable ())
+            # on first login, user has to first setup his account
             if not User_info.get_current_usr().get_is_set_up_variable () :
                 login_utils.set_up_account(db)
                 User_info.get_current_usr().set_is_set_up_variable(True)
@@ -84,11 +102,5 @@ def show_menu (db):
         function(*arguments)
         input("Press any key to continue")
 
+# App entry point #
 show_menu(get_db())
-
-
-
-
-
-
-
